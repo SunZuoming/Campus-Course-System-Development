@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.CourseTableDao">
+ <resultMap id="CourseTableMap" type="com.courseplatform.po.CourseTable">
+    <id column="id"  property="id" />
+    <result column="USERNOT" jdbcType="VARCHAR" property="usernot" />
+    <result column="USERNOS" jdbcType="VARCHAR" property="usernos" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="courseps" jdbcType="VARCHAR" property="courseps" />
+    <result column="COURSEINFONO" jdbcType="VARCHAR" property="course.courseinfono" />
+    <result column="coursename" jdbcType="VARCHAR" property="coursename" />
+  </resultMap>
+   <select id="getStudentCourse" parameterType="CourseTable" resultMap="CourseTableMap">
+   select * from course_table where USERNOS=#{usernos}
+   </select>
+   
+   <select id="getTeacherCourse" parameterType="CourseTable" resultMap="CourseTableMap">
+   select * from course_table where USERNOT=#{usernot} GROUP BY coursename
+   </select>
+   
+   <select id="getsCourse" parameterType="CourseTable" resultMap="CourseTableMap">
+   select * from course_table where USERNOT=#{usernot} and coursename=#{coursename}
+   </select>
+ </mapper>

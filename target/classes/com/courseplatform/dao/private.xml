@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.WatchDao">
+<resultMap id="privmap" type="com.courseplatform.po.Privatecourse">
+	    <id column="id" property="id" />
+	    <result column="coname" property="coname" />
+	     <result column="userid" property="userid" />
+	     <result column="spurl" property="spurl" />
+</resultMap>
+	
+	<insert id="insertpriCourse" parameterType="Privatecourse" >
+		insert into privatecourse (coname,userid) values(#{coname},#{userid})
+	</insert>
+	
+	<select id="AllpriCourse" parameterType="Privatecourse" resultMap="privmap">
+	   select * from privatecourse where userid=#{userid} 
+	 </select>
+	 
+	 <select id="priCourse" parameterType="Privatecourse" resultMap="privmap">
+	   select * from privatecourse where userid=#{userid} and coname=#{coname}
+	 </select>
+	 
+	 <delete id="deleteWatch" parameterType="Privatecourse">
+	  delete from privatecourse where id=#{id}
+	</delete>
+	
+	 <select id="selectWatch" parameterType="Privatecourse" resultMap="privmap">
+	   select * from privatecourse where id=#{id} 
+	 </select>
+</mapper>

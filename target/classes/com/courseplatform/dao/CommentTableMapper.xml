@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.CommentTableDao">
+  <resultMap id="CommentTableMap" type="com.courseplatform.po.CommentTable">
+    <id column="COMMENTNO" jdbcType="VARCHAR" property="commentno" />
+    <result column="ARTICLENO" jdbcType="VARCHAR" property="articleno" />
+    <result column="COMMENTCONTENT" jdbcType="VARCHAR" property="commentcontent" />
+    <result column="COMMENTTIME" jdbcType="VARCHAR" property="commenttime" />
+    <result column="COMMENTER" jdbcType="VARCHAR" property="commenter" />
+    <result column="COMMENTERNO" jdbcType="VARCHAR" property="commenterno" />
+  </resultMap>
+  
+  <select id="getCommnetNum" resultType="Long">
+  	select count(*) from comment_table
+  </select>
+  
+  <select id="getCommnetNumByNo" resultType="Integer" parameterType="Map">
+  	select count(*) from comment_table where COMMENTERNO = #{userNo} and COMMENTTIME like #{date}
+  </select>
+  
+  <select id="getComment" resultMap="CommentTableMap" parameterType="String">
+  	select * from comment_table where COMMENTNO = #{commentNo}
+  </select>
+  
+  <delete id="deleteCommentByArticleNo" parameterType="String">
+  	delete from comment_table where ARTICLENO = #{articleNo}
+  </delete>
+  
+  <delete id="deleteCommentByCommentNo" parameterType="String">
+  	delete from commnet_table where COMMENTNO = #{commentNo}
+  </delete>
+  
+ </mapper>

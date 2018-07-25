@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.ArticletypeTableDao">
+  <resultMap id="BaseResultMap" type="com.courseplatform.po.ArticletypeTable">
+    <id column="ARTICLETYPEID" jdbcType="VARCHAR" property="articletypeid" />
+    <result column="ARTICLETYPENAME" jdbcType="VARCHAR" property="articletypename" />
+    <result column="ARTICLETYPEFATHER" jdbcType="VARCHAR" property="articletypefather" />
+  </resultMap>
+ </mapper>

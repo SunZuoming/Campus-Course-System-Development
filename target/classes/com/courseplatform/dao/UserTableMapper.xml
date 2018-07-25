@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.UserTableDao">
+  <resultMap id="UserMap" type="com.courseplatform.po.User">
+    <id column="USERNO" jdbcType="CHAR" property="userNo" />
+    <result column="ROLEID" jdbcType="VARCHAR" property="roleId" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USERPASSWORD" jdbcType="VARCHAR" property="userPassword" />
+    <result column="LOGINFIRSTFLAG" jdbcType="CHAR" property="loginFirstflag" />
+    <result column="USERSYSTEMSCORE" jdbcType="REAL" property="userSystemscore" />
+    <result column="USERPHONE" jdbcType="VARCHAR" property="userPhone" />
+    <result column="WARNINGNUM" jdbcType="INTEGER" property="warningNum" />
+    <result column="USERSTATE" jdbcType="VARCHAR" property="userState" />
+    <result column="LOGINFAILNUMBER" jdbcType="INTEGER" property="loginFailnumber" />
+    <result column="PROHIBITLOGINNUM" jdbcType="INTEGER" property="prohibitLoginnum" />
+    <result column="WARNINGAFTERPROHIBITNUM" jdbcType="INTEGER" property="warningAfterprohibitnum" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="ACTIVESTATE" jdbcType="VARCHAR" property="activeState" />
+    <result column="USERCODE" jdbcType="VARCHAR" property="userCode" />
+  </resultMap>
+  
+  <select id="checkLogin" parameterType="User" resultMap="UserMap">
+  	select * from user_table where USERNO = #{userNo} and ROLEID = '000001'
+  </select>
+  
+  <select id="getUserByUserNo" parameterType="String" resultMap="UserMap">
+  	select * from user_table where USERNO = #{userNo} 
+  </select>
+  
+  <insert id="insertUser" parameterType="User">
+  	insert into user_table (USERNO,ROLEID,USERNAME,USERPASSWORD,USERPHONE,EMAIL) 
+  		values 
+  		(#{userNo},#{roleId},#{userName},#{userPassword},#{userPhone},#{email})
+  </insert>
+  
+  <update id="updateUser" parameterType="User">
+  	update user_table 
+  	<set>
+  		<if test="loginFirstflag != null and loginFirstflag != ''">
+  			LOGINFIRSTFLAG = #{loginFirstflag},
+  		</if>
+  		<if test="warningNum != null">
+  			WARNINGNUM = #{warningNum},
+   		</if>
+   		<if test="userState != null and userState != ''">
+   			USERSTATE = #{userState},
+   		</if>
+   		<if test="loginFailnumber != null">
+   			LOGINFAILNUMBER = #{loginFailnumber},
+   		</if>
+   		<if test="prohibitLoginnum !=null">
+   			PROHIBITLOGINNUM = #{prohibitLoginnum},
+   		</if>
+   		<if test="warningAfterprohibitnum != null">
+   			WARNINGAFTERPROHIBITNUM = #{warningAfterprohibitnum},
+   		</if>
+  	</set>
+  	where USERNO = #{userNo}
+  </update>
+  
+  <update id="updateUserFailLogin" >
+  	update user_table set LOGINFAILNUMBER = 0
+  </update>
+  
+  <update id="updateUserState" parameterType="java.util.List">
+  	update user_table set USERSTATE = '0' and WARNINGAFTERPROHIBITNUM = 0
+  		where  
+  		<foreach collection="list" item="pro" index="index" separator="or">
+  			USERNO = #{pro.ProhibitLogineer}
+  		</foreach>
+  </update>
+  
+  <select id="getUserList2State" resultMap="UserMap" >
+  	select * from user_table where USERSTATE = '2'
+  </select>
+  
+  <delete id="deleteUser2State">
+  	delete from user_table where USERSTATE = '2'
+  </delete>
+  
+  <delete id="deleteTeacher" parameterType="String">
+  	delete from user_table where USERNO = #{userNo}
+  </delete>
+  
+  <update id="changePassword" parameterType="User">
+  	update user_table set USERPASSWORD = #{userPassword},LOGINFIRSTFLAG = #{loginFirstflag}
+  	where USERNO = #{userNo}
+  </update>
+  
+  <select id="getUserList3State" resultMap="UserMap" parameterType = "Map">
+  	select * from user_table where USERSTATE = '3' and ROLEID = 'JS002' limit #{start},#{length}
+  </select>
+  
+  <update id="updateTeacherState" parameterType="String">
+  	update user_table set USERSTATE = '0' where  USERNO = #{userNo}
+  </update>
+  
+  <select id="getTeacherNum" resultType="Integer">
+  	select count(*) from user_table where USERSTATE = '3'
+  </select>
+  
+  <update id="comProByNo" parameterType="String">
+  	update user_table set USERSTATE = '1',PROHIBITLOGINNUM = PROHIBITLOGINNUM +1 where USERNO = #{userNo}
+  </update>
+  
+  <select id="getProNum" resultType="Integer">
+  	select count(*) from user_table where USERSTATE = '1'
+  </select>
+  
+  <update id="cancelProState" parameterType="String">
+  	update user_table set USERSTATE = '0',LOGINFAILNUMBER = 0 where USERNO = #{userNo}
+  </update>
+  
+  <select id="getAllUser2" resultMap = "UserMap">
+  	select * from user_table where ROLEID != '000001'
+  </select> 
+  
+  <update id="updateSysScore" parameterType = "Map">
+  	update user_table set USERSYSTEMSCORE = USERSYSTEMSCORE + #{score} where USERNO = #{userNo}
+  </update>
+  
+  <select id="getUser"  parameterType="com.courseplatform.po.User"  resultType="com.courseplatform.po.DTO.UserDTO">
+ 	 select user_table.USERNO as userNo,user_table.USERNAME as userName,role_table.ROLENAME as roleName,role_table.ROLEID as roleId
+ 	  
+ 	 from user_table , role_table where user_table.ROLEID=role_table.ROLEID
+  </select>
+</mapper>

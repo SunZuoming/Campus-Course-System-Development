@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.courseplatform.dao.CourseFileDao">
+
+<resultMap type="CourseFile" id="filemap">
+		<id column="id" property="id" />
+		<result column="courseuser" property="courseuser" />
+		<result column="coursename" property="coursename" />
+		<result column="homeworkcommitno" property="homeworkcommitno" />
+		<result column="homeworkno" property="homeworkno" />
+		<result column="filedress" property="filedress" />
+</resultMap>
+
+<insert id="courseFile" parameterType="CourseFile">
+        insert into coursefile(courseuser,coursename,homeworkcommitno,homeworkno,filedress) 
+        values(#{courseuser},#{coursename},#{homeworkcommitno},#{homeworkno},#{filedress})
+</insert>
+
+</mapper>

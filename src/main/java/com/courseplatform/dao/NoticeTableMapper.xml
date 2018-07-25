@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.NoticeTableDao">
+  <resultMap id="BaseResultMap" type="com.courseplatform.po.NoticeTable">
+    <id column="NOTICEID" jdbcType="CHAR" property="noticeid" />
+    <result column="NOTICEPUBLISHER" jdbcType="VARCHAR" property="noticepublisher" />
+    <result column="NOTCECONTENT" jdbcType="VARCHAR" property="notcecontent" />
+    <result column="NOTICESTARTDATE" jdbcType="VARCHAR" property="noticestartdate" />
+    <result column="NOTICEENDDATE" jdbcType="VARCHAR" property="noticeenddate" />
+    <result column="NOTICEPUBLISHERDATE" jdbcType="VARCHAR" property="noticepublisherdate" />
+    <result column="NOTICEENDFLAG" jdbcType="VARCHAR" property="noticeendflag" />
+  </resultMap>
+  
+  <select id="getNoticeNUm" resultType="Long">
+  	select count(*) from notice_table
+  </select>
+  <select id="getNotice" parameterType="com.courseplatform.po.NoticeTable" resultMap="BaseResultMap">
+  	select *
+  	from notice_table 
+  </select>
+  <insert id="addNotice" parameterType="com.courseplatform.po.NoticeTable">
+  	insert into notice_table 
+  	(NOTICEID,NOTICEPUBLISHER,NOTCECONTENT,NOTICESTARTDATE,NOTICEENDDATE,NOTICEPUBLISHERDATE,NOTICEENDFLAG)
+  	values 
+  	(#{noticeid},#{noticepublisher},#{notcecontent},#{noticestartdate},#{noticeenddate},#{noticepublisherdate},#{noticeendflag})
+  </insert>
+  <update id="updateNotice" parameterType="com.courseplatform.po.NoticeTable">
+    update notice_table
+    set
+      NOTICEPUBLISHER = #{noticepublisher,jdbcType=VARCHAR},
+      NOTCECONTENT = #{notcecontent,jdbcType=VARCHAR},
+      NOTICESTARTDATE = #{noticestartdate,jdbcType=VARCHAR},
+      NOTICEENDDATE = #{noticeenddate,jdbcType=VARCHAR},
+      NOTICEPUBLISHERDATE = #{noticepublisherdate,jdbcType=VARCHAR}
+    where
+     NOTICEID=#{noticeid,jdbcType=VARCHAR} 
+      
+  </update>
+  <select id="selectById" parameterType="com.courseplatform.po.NoticeTable" resultMap="BaseResultMap">
+    select *
+    from notice_table
+    where NOTICEID=#{noticeid,jdbcType=VARCHAR} 
+  </select>
+  <delete id="deleteNotice" parameterType="com.courseplatform.po.NoticeTable">
+  	delete from notice_table 
+  	where NOTICEID=#{noticeid,jdbcType=VARCHAR} 
+  </delete>
+    <delete id="deleteMap" parameterType="String">
+  	delete 
+  	from notice_table where NOTICEID in
+  	<foreach item="item" collection="array" open="("  
+            separator="," close=")">  
+            #{item}
+    </foreach> 
+  </delete>
+  <insert id="insert" parameterType="com.courseplatform.po.NoticeTable">
+    insert into notice_table (NOTICEID, NOTICEPUBLISHER, NOTCECONTENT, 
+      NOTICESTARTDATE, NOTICEENDDATE, NOTICEPUBLISHERDATE, 
+      NOTICEENDFLAG)
+    values (#{noticeid,jdbcType=CHAR}, #{noticepublisher,jdbcType=VARCHAR}, #{notcecontent,jdbcType=VARCHAR}, 
+      #{noticestartdate,jdbcType=VARCHAR}, #{noticeenddate,jdbcType=VARCHAR}, #{noticepublisherdate,jdbcType=VARCHAR}, 
+      #{noticeendflag,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateByPrimaryKey" parameterType="com.courseplatform.po.NoticeTable">
+    update notice_table
+    set NOTICEPUBLISHER = #{noticepublisher,jdbcType=VARCHAR},
+      NOTCECONTENT = #{notcecontent,jdbcType=VARCHAR},
+      NOTICESTARTDATE = #{noticestartdate,jdbcType=VARCHAR},
+      NOTICEENDDATE = #{noticeenddate,jdbcType=VARCHAR},
+      NOTICEPUBLISHERDATE = #{noticepublisherdate,jdbcType=VARCHAR},
+      NOTICEENDFLAG = #{noticeendflag,jdbcType=VARCHAR}
+    where NOTICEID = #{noticeid,jdbcType=CHAR}
+  </update>
+  
+  <update id="endNotice" parameterType="String">
+  	update notice_table set NOTICEENDFLAG = '1' where NOTICEID = #{noticeId}
+  </update>
+</mapper>

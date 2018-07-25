@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.ErrorinfoTableDao">
+  <resultMap id="BaseResultMap" type="com.courseplatform.po.ErrorinfoTable">
+    <id column="ERRORINFONO" jdbcType="VARCHAR" property="errorinfono" />
+    <result column="ERRONMESSAGE" jdbcType="VARCHAR" property="erronmessage" />
+    <result column="ERRORFUNCTIONNO" jdbcType="VARCHAR" property="errorfunctionno" />
+    <result column="ERRORNAME" jdbcType="VARCHAR" property="errorname" />
+  </resultMap>
+ </mapper>

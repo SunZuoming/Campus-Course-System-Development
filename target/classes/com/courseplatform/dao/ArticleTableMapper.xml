@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.ArticleTableDao">
+  <resultMap id="ArticleTableMap" type="com.courseplatform.po.ArticleTable">
+    <id column="ARTICLENO" jdbcType="VARCHAR" property="articleno" />
+    <result column="ARTICLENAME" jdbcType="VARCHAR" property="articlename" />
+    <result column="ARTICLEPUBLISHER" jdbcType="VARCHAR" property="articlepublisher" />
+    <result column="ARTICLEFILEURL" jdbcType="VARCHAR" property="articlefileurl" />
+    <result column="ARTICLEFILENAME" jdbcType="VARCHAR" property="articlefilename" />
+    <result column="ARTICLECONTENT" jdbcType="VARCHAR" property="articlecontent" />
+    <result column="ARTICLEPUBLISHTIME" jdbcType="VARCHAR" property="articlepublishtime" />
+    <result column="ARTICLETYPES" jdbcType="VARCHAR" property="articletypes" />
+    <result column="ARTICLEREADNUM" jdbcType="INTEGER" property="articlereadnum" />
+    <result column="ARTICLECOLLECTNUM" jdbcType="INTEGER" property="articlecollectnum" />
+    <result column="ARTICLEREPORTNUM" jdbcType="INTEGER" property="articlereportnum" />
+    <result column="ARTICLECOMNUM" jdbcType="INTEGER" property="articlecomnum" />
+    <result column="ARTICLECABSTRACT" jdbcType="VARCHAR" property="articlecabstract" />
+    <result column="ARTICLEPUBLISHERNO" jdbcType="VARCHAR" property="articlepublisherno" />
+    
+  </resultMap>
+  
+  <select id="getArticleNum" resultType="Long">
+  	select count(*) from article_table
+  </select>
+  
+  <select id="getArticleNumByNo" resultType="Integer" parameterType="Map">
+  	select count(*) from article_table where ARTICLEPUBLISHERNO = #{userNo} and ARTICLEPUBLISHTIME like #{date}
+  </select>
+  
+  <select id="getArticle" resultMap="ArticleTableMap" parameterType="String">
+  	select * from article_table where ARTICLENO = #{articleNo}
+  </select>
+  
+  <delete id="deleteArticle" parameterType="String">
+  	delete from article_table where ARTICLENO = #{articleNo}
+  </delete>
+  
+ </mapper>

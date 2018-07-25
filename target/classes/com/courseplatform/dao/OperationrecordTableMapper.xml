@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.OperationrecordTableDao">
+  <resultMap id="OperationrecordTableMap" type="com.courseplatform.po.OperationrecordTable">
+    <id column="OPERATIONRECORDNO" jdbcType="VARCHAR" property="operationrecordno" />
+    <result column="OPERATORNO" jdbcType="VARCHAR" property="operatorno" />
+    <result column="FUNCTIONNO" jdbcType="VARCHAR" property="function.functionno" />
+    <result column="OPERATIONTIME" jdbcType="VARCHAR" property="operationtime" />
+    <result column="OPERATIONRESULT" jdbcType="VARCHAR" property="operationresult" />
+    <result column="ERRORNAME" jdbcType="VARCHAR" property="errorname" />
+  </resultMap>
+  
+  <insert id="insertOperationRecord" parameterType="OperationrecordTable">
+  	insert into operationrecord_table (OPERATIONRECORDNO,OPERATORNO,FUNCTIONNO,OPERATIONTIME)
+  			values (#{operationrecordno},#{operatorno},#{function.functionno},#{operationtime})
+  </insert>
+  
+  <update id="updateOperationRecord" parameterType="OperationrecordTable">
+  	update operationrecord_table
+  	<set>
+  		OPERATIONRESULT = #{operationresult},ERRORNAME=#{errorname}
+  	</set>
+  	where OPERATIONRECORDNO = #{operationrecordno}
+  </update>
+  
+  <delete id="deleteOperationRecord" parameterType="String">
+  	delete from operationrecord_table where str_to_date(operationtime,'%Y-%m-%d %H:%i:%s') - str_to_date(OPERATIONTIME,'%Y-%m-%d %H:%i:%s') >= 0
+  </delete>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.LoginTableDao">
+  <resultMap id="LoginTableMap" type="com.courseplatform.po.LoginTable">
+    <id column="LOGINID" jdbcType="VARCHAR" property="loginid" />
+    <result column="LOGINUSERNO" jdbcType="VARCHAR" property="loginuserno" />
+    <result column="LOGINIP" jdbcType="VARCHAR" property="loginip" />
+    <result column="LOGINRESULT" jdbcType="VARCHAR" property="loginresult" />
+    <result column="LOGINTIME" jdbcType="VARCHAR" property="logintime" />
+    <result column="LOGINOUTTIME" jdbcType="VARCHAR" property="loginouttime" />
+    <result column="LOGINOUTTYPE" jdbcType="VARCHAR" property="loginouttype" />
+    <result column="LOGINTYPE" jdbcType="VARCHAR" property="logintype" />
+  </resultMap>
+  
+  <insert id="insertLogin" parameterType="LoginTable" >
+  	insert into login_table (LOGINID,LOGINUSERNO,LOGINIP,LOGINRESULT,LOGINTIME,LOGINTYPE) 
+  				values 
+  		(#{loginid},#{loginuserno},#{loginip},#{loginresult},#{logintime},#{logintype}) 
+  </insert>
+  
+  <update id="updateLogin" parameterType="LoginTable">
+  	update login_table
+  	<set>
+  		<if test="loginresult != null">
+  			LOGINRESULT = #{loginresult},
+  		</if>
+  		<if test="loginouttime != null">
+  			LOGINOUTTIME = #{loginouttime},
+  		</if>
+  		<if test="loginouttype != null">
+  			LOGINOUTTYPE = #{loginouttype},
+  		</if>
+  	</set>
+  		where LOGINID = #{loginid}
+  	
+  </update>
+  
+  <delete id="deleteLogin" parameterType="String">
+  	delete from login_table where str_to_date(#{logintime},'%Y-%m-%d %H:%i:%s') >= str_to_date(LOGINTIME,'%Y-%m-%d %H:%i:%s')
+  </delete>
+  
+ </mapper>

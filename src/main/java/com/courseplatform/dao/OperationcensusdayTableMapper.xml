@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.OperationcensusdayTableDao">
+  <resultMap id="BaseResultMap" type="com.courseplatform.po.OperationcensusdayTable">
+    <id column="OPERATIONCENSUSDAYNO" jdbcType="VARCHAR" property="operationcensusdayno" />
+    <result column="OPERATOR" jdbcType="VARCHAR" property="operator" />
+    <result column="OPERATIONCENSUSDATE" jdbcType="VARCHAR" property="operationcensusdate" />
+    <result column="OPERATIONDAYNUM" jdbcType="INTEGER" property="operationdaynum" />
+    <result column="READARTICLENUM" jdbcType="INTEGER" property="readarticlenum" />
+    <result column="ADDARTICLENUM" jdbcType="INTEGER" property="addarticlenum" />
+    <result column="DOWNSHAREDFILENUM" jdbcType="INTEGER" property="downsharedfilenum" />
+    <result column="UPLOADSHAREDFILENUM" jdbcType="INTEGER" property="uploadsharedfilenum" />
+    <result column="PUBLISHHOMEWORKNUM" jdbcType="INTEGER" property="publishhomeworknum" />
+    <result column="COMMITHOMEWORKNUM" jdbcType="INTEGER" property="commithomeworknum" />
+    <result column="CORRECTHOMEWORKNUM" jdbcType="INTEGER" property="correcthomeworknum" />
+    <result column="READQUESTIONNUM" jdbcType="INTEGER" property="readquestionnum" />
+    <result column="QUESTIONNUM" jdbcType="INTEGER" property="questionnum" />
+    <result column="ANSWERNUM" jdbcType="INTEGER" property="answernum" />
+    <result column="GOODNUM" jdbcType="INTEGER" property="goodnum" />
+    <result column="BADNUM" jdbcType="INTEGER" property="badnum" />
+    <result column="COLLECTNUM" jdbcType="INTEGER" property="collectnum" />
+    <result column="REPORTNUM" jdbcType="INTEGER" property="reportnum" />
+  </resultMap>
+  
+  <resultMap id="OperationcensusmonthTableMap" type="com.courseplatform.po.OperationcensusmonthTable">
+    <id column="OPERATIONCENSUSMONTHNO" jdbcType="VARCHAR" property="operationcensusmonthno" />
+    <result column="OPERATOR" jdbcType="VARCHAR" property="operator" />
+    <result column="OPERATIONCENSUSMONTH" jdbcType="VARCHAR" property="operationcensusmonth" />
+    <result column="OPERATIONMONTHNUM" jdbcType="INTEGER" property="operationmonthnum" />
+    <result column="READARTICLENUM" jdbcType="INTEGER" property="readarticlenum" />
+    <result column="ADDARTICLENUM" jdbcType="INTEGER" property="addarticlenum" />
+    <result column="DOWNSHAREDFILENUM" jdbcType="INTEGER" property="downsharedfilenum" />
+    <result column="UPLOADSHAREDFILENUM" jdbcType="INTEGER" property="uploadsharedfilenum" />
+    <result column="PUBLISHHOMEWORKNUM" jdbcType="INTEGER" property="publishhomeworknum" />
+    <result column="COMMITHOMEWORKNUM" jdbcType="INTEGER" property="commithomeworknum" />
+    <result column="CORRECTHOMEWORKNUM" jdbcType="INTEGER" property="correcthomeworknum" />
+    <result column="READQUESTIONNUM" jdbcType="INTEGER" property="readquestionnum" />
+    <result column="QUESTIONNUM" jdbcType="INTEGER" property="questionnum" />
+    <result column="ANSWERNUM" jdbcType="INTEGER" property="answernum" />
+    <result column="GOODNUM" jdbcType="INTEGER" property="goodnum" />
+    <result column="BADNUM" jdbcType="INTEGER" property="badnum" />
+    <result column="COLLECTNUM" jdbcType="INTEGER" property="collectnum" />
+    <result column="REPORTNUM" jdbcType="INTEGER" property="reportnum" />
+  </resultMap>
+  
+  <insert id="insertOperationDay" parameterType="OperationcensusdayTable">
+  	insert into operationcensusday_table 
+  		(OPERATIONCENSUSDAYNO,OPERATOR,OPERATIONCENSUSDATE,OPERATIONDAYNUM,READARTICLENUM,ADDARTICLENUM,
+  		UPLOADSHAREDFILENUM,PUBLISHHOMEWORKNUM,COMMITHOMEWORKNUM,QUESTIONNUM,ANSWERNUM,COLLECTNUM)
+  		values
+  		(#{operationcensusdayno},#{operator},#{operationcensusdate},#{operationdaynum},#{readarticlenum},#{addarticlenum},
+  		#{uploadsharedfilenum},#{publishhomeworknum},#{commithomeworknum},#{questionnum},#{answernum},#{collectnum})
+  </insert>
+  
+  <delete id="deleteOperationDay" parameterType="Map">
+  	delete from operationcensusday_table where OPERATIONCENSUSDATE like #{date} and OPERATOR = #{userNo};
+  </delete>
+  
+  <select id="getMonth" parameterType="String" resultMap="OperationcensusmonthTableMap">
+  	select 
+  		OPERATOR, sum(OPERATIONDAYNUM)as OPERATIONMONTHNUM ,
+  		sum(READARTICLENUM)as READARTICLENUM,sum(ADDARTICLENUM) as ADDARTICLENUM,sum(UPLOADSHAREDFILENUM) as UPLOADSHAREDFILENUM,
+  		sum(PUBLISHHOMEWORKNUM) as PUBLISHHOMEWORKNUM,sum(COMMITHOMEWORKNUM) as COMMITHOMEWORKNUM,sum(QUESTIONNUM) as QUESTIONNUM,
+  		sum(ANSWERNUM) as ANSWERNUM,sum(COLLECTNUM) as COLLECTNUM
+  		 from operationcensusday_table where OPERATIONCENSUSDATE like #{month} group by OPERATOR;
+  </select>
+  
+  <select id="getDayReportList" parameterType="Map" resultType="com.courseplatform.po.report.OperationReport">
+  	select u.USERNO as userNo,u.USERNAME as userName,r.ROLENAME as roleName,o.OPERATIONCENSUSDATE as date,
+  			o.OPERATIONDAYNUM as operation,o.READARTICLENUM as comment,o.ADDARTICLENUM as article,
+  			o.UPLOADSHAREDFILENUM as sharedFile,o.PUBLISHHOMEWORKNUM as homeWork,o.COMMITHOMEWORKNUM as homeWorkCommit,
+  			o.QUESTIONNUM as question,o.ANSWERNUM as answer,o.COLLECTNUM as collection
+  			from user_table u,role_table r,operationcensusday_table o 
+  			where u.USERNO = o.OPERATOR and u.ROLEID = r.ROLEID 
+  			and str_to_date(o.OPERATIONCENSUSDATE,'%Y-%m-%d')>= str_to_date(#{startDate},'%Y-%m-%d')  
+  			and str_to_date(#{endDate},'%Y-%m-%d') >= str_to_date(o.OPERATIONCENSUSDATE,'%Y-%m-%d') 
+  </select>
+  
+  <select id="getDayReportListByNo" parameterType="Map" resultType="com.courseplatform.po.report.OperationReport">
+  	select u.USERNO as userNo,u.USERNAME as userName,r.ROLENAME as roleName,o.OPERATIONCENSUSDATE as date,
+  			o.OPERATIONDAYNUM as operation,o.READARTICLENUM as comment,o.ADDARTICLENUM as article,
+  			o.UPLOADSHAREDFILENUM as sharedFile,o.PUBLISHHOMEWORKNUM as homeWork,o.COMMITHOMEWORKNUM as homeWorkCommit,
+  			o.QUESTIONNUM as question,o.ANSWERNUM as answer,o.COLLECTNUM as collection
+  			from user_table u,role_table r,operationcensusday_table o 
+  			where u.USERNO = o.OPERATOR and u.ROLEID = r.ROLEID 
+  			and str_to_date(o.OPERATIONCENSUSDATE,'%Y-%m-%d')>= str_to_date(#{startDate},'%Y-%m-%d')  
+  			and str_to_date(#{endDate},'%Y-%m-%d') >= str_to_date(o.OPERATIONCENSUSDATE,'%Y-%m-%d')
+  			and u.USERNO like #{userNo} 
+  </select>
+  
+ </mapper>

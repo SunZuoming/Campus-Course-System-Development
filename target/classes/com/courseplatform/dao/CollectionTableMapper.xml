@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.CollectionTableDao">
+  <resultMap id="CollectionTableMap" type="com.courseplatform.po.CollectionTable">
+    <id column="COLLECTNO" jdbcType="VARCHAR" property="collectno" />
+    <result column="COLLECTIONNO" jdbcType="VARCHAR" property="collectionno" />
+    <result column="COLLECTIONTYPE" jdbcType="VARCHAR" property="collectiontype" />
+    <result column="COLLECTOR" jdbcType="VARCHAR" property="collector" />
+    <result column="COLLECTTIME" jdbcType="VARCHAR" property="collecttime" />
+  </resultMap>
+  
+  <select id="getCollectionNum" resultType="Long">
+  	select count(*) from collection_table
+  </select>
+  
+  <select id="getCollectionNumByNo" resultType="Integer" parameterType="Map">
+  	select count(*) from collection_table where COLLECTOR = #{userNo} and COLLECTTIME like #{date}  
+  </select>
+  
+ </mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.courseplatform.dao.UserimageDao">
+
+<resultMap type="Userimage" id="filemap">
+		<id column="id" property="id" />
+		<result column="userno" property="userno" />
+		<result column="imagedress" property="imagedress" />
+</resultMap>
+		
+    <update id="updataImage" parameterType="Userimage">
+	  update userimage set imagedress=#{imagedress} where userno=#{userno}
+	</update>
+	
+	<insert id="registerImage" parameterType="Userimage">
+        insert into userimage(userno,imagedress) 
+        values(#{userno},"imagefile/avatar-01.png")
+     </insert>
+     
+     <select id="imageTo" parameterType="Userimage" resultMap="filemap">
+	   select * from userimage where userno=#{userno}
+	 </select>
+		
+</mapper>

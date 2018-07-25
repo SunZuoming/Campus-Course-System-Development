@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.SharedfileexamineTableDao">
+  <resultMap id="SharedfileexamineTableMap" type="com.courseplatform.po.SharedfileexamineTable">
+    <id column="EXAMINENO" jdbcType="VARCHAR" property="examineno" />
+    <result column="SHAREDFILENO" jdbcType="VARCHAR" property="sharedfileno" />
+    <result column="UPLOADER" jdbcType="VARCHAR" property="uploader" />
+    <result column="EXAMINER" jdbcType="VARCHAR" property="examiner" />
+    <result column="EXAMINERESULT" jdbcType="VARCHAR" property="examineresult" />
+    <result column="EXAMINEFAILREASON" jdbcType="VARCHAR" property="examinefailreason" />
+  </resultMap>
+  
+  <insert id="createFileExamine" parameterType ="SharedfileexamineTable">
+  	insert into sharedfileexamine_table (EXAMINENO,SHAREDFILENO,UPLOADER,
+  					EXAMINER,EXAMINERESULT,EXAMINEFAILREASON)
+			values(#{examineno},#{sharedfileno},#{uploader},#{examiner},#{examineresult},
+					#{examinefailreason})  					
+  </insert>
+  
+  <update id="updateFileExamine" parameterType="SharedfileexamineTable" >
+  	update sharedfileexamine_table set EXAMINERESULT = #{examineresult},
+  				EXAMINEFAILREASON =#{examinefailreason} 
+  			where EXAMINENO = #{examineno}
+  </update>
+  
+  <select id="getFileExamineList" parameterType="SharedfileexamineTable" resultMap = "SharedfileexamineTableMap">
+  	select * from  sharedfileexamine_table where SHAREDFILENO = #{sharedfileno} or EXAMINENO = #{examineno}
+  </select>
+  
+  <insert id="insert" parameterType="com.courseplatform.po.SharedfileexamineTable">
+    <selectKey keyProperty="examineno" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sharedfileexamine_table (SHAREDFILENO, UPLOADER, EXAMINER, 
+      EXAMINERESULT, EXAMINEFAILREASON)
+    values (#{sharedfileno,jdbcType=VARCHAR}, #{uploader,jdbcType=VARCHAR}, #{examiner,jdbcType=VARCHAR}, 
+      #{examineresult,jdbcType=VARCHAR}, #{examinefailreason,jdbcType=VARCHAR})
+  </insert>
+
+</mapper>

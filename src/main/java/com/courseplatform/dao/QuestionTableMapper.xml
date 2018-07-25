@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.QuestionTableDao">
+  <resultMap id="QuestionTableMap" type="com.courseplatform.po.QuestionTable">
+    <id column="QUESTIONNO" jdbcType="VARCHAR" property="questionno" />
+    <result column="QUESTIONPUBLISHER" jdbcType="VARCHAR" property="questionpublisher" />
+    <result column="QUESTIONTIME" jdbcType="VARCHAR" property="questiontime" />
+    <result column="QUESTIONCONTENT" jdbcType="VARCHAR" property="questioncontent" />
+    <result column="QUESTIONCOURSE" jdbcType="VARCHAR" property="questioncourse" />
+    <result column="QUESTIONRESOVEFLAG" jdbcType="VARCHAR" property="questionresoveflag" />
+    <result column="QUESTIONTYPENAME" jdbcType="VARCHAR" property="questiontypename" />
+    <result column="QUESTIONTYPENO" jdbcType="VARCHAR" property="questiontypeno" />
+    <result column="QUESTIONNAME" jdbcType="VARCHAR" property="questionname" />
+    <result column="QUESTIONPUBLISHERNO" jdbcType="VARCHAR" property="questionpublisherno" />
+    <result column="QUESTIONCOMMENTNUM" jdbcType="INTEGER" property="questioncommentnum" />
+    
+  </resultMap>
+  
+  <select id="getQuestionNum" resultType="Long">
+  	select count(*) from question_table
+  </select>
+  
+  <select id="getQuestionNumByNo" resultType="Integer" parameterType="Map">
+  	select count(*) from question_table where QUESTIONPUBLISHERNO =#{userNo} and QUESTIONTIME like #{date}
+  </select>
+  
+  <select id="getQuestion" resultMap="QuestionTableMap" parameterType="String">
+  	select * from question_table where QUESTIONNO = #{questionNo}
+  </select> 
+  
+  <delete id="deleteQuestion" parameterType="String">
+  	delete from question_table where QUESTIONNO = #{questionNo}
+  </delete>
+  
+</mapper>

@@ -1,0 +1,33 @@
+@charset "utf-8";
+*{padding:0px;margin:0px;}
+body{min-width:980px;background-color:#fafafa;font:20px/1.5 arial,sans-serif;}
+body,ul,h1{margin:0px;}
+ul{list-style-type:none;}
+img{display:block;}/*变成块集元素*/
+a{text-decoration:none;}
+.left{width:200px;height:380px;background-color:;float:left;}
+.left h4{width:200px;height:20px;margin:20px 0 20px 0;font-size:15px;color:#666;text-align:center;}
+.left img{width:150px;margin:0 auto;display:block;border:1px solid #E3E3E3;padding:4px;}
+.left dd{width:200px;height:30px;font:13px/18px 'microsoft yahei';color:#666;margin:20px 0 10px 0;text-align:center;display:block;}
+.yl {
+  margin:auto;
+  position:relative;
+  padding:0;
+  display:inline;
+  text-algin:center;
+  position: relative;
+  left:10px;
+  top:200px;
+  
+}
+.yll {
+  margin:auto;
+  position:relative;
+  padding:0;
+  display:inline;
+  text-algin:center;
+  position: relative;
+  left:1500px;
+  top:200px;
+  
+}

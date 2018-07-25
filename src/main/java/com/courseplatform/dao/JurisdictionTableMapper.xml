@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.JurisdictionTableDao">
+  <resultMap id="JurisdictionTableMap" type="com.courseplatform.po.JurisdictionTable">
+    <id column="JURISDICTIONNO" jdbcType="VARCHAR" property="jurisdictionno" />
+    <result column="ROLEID" jdbcType="VARCHAR" property="roleid" />
+    <result column="FUNCTIONNO" jdbcType="VARCHAR" property="functionno" />
+  </resultMap>
+
+   <select id="select" resultType="com.courseplatform.po.DTO.JurisdictionTableDTO">
+      select j.JURISDICTIONNO as jurisdictionno,r.ROLENAME as roleName,r.ROLEID as roleid,f.FUNCTIONNAME as functionName,
+      	f.FUNCTIONNO as functionno,f.FUNCTIONURL as functionurl,f.FUNCTIONFATHER as functionfather,f.FUNCTIONNOTE as functionnote
+     	from jurisdiction_table j,role_table r,function_table f 
+     	where j.ROLEID = r.ROLEID and j.FUNCTIONNO = f.FUNCTIONNO
+  </select>
+  <select id="selectByRole" resultType="com.courseplatform.po.DTO.JurisdictionTableDTO">
+  	 select j.JURISDICTIONNO as jurisdictionno,r.ROLENAME as roleName,r.ROLEID as roleid,f.FUNCTIONNAME as functionName,
+      	f.FUNCTIONNO as functionno,f.FUNCTIONURL as functionurl,f.FUNCTIONFATHER as functionfather,f.FUNCTIONNOTE as functionnote
+     	from jurisdiction_table j,role_table r,function_table f 
+     	where j.ROLEID = r.ROLEID and j.FUNCTIONNO = f.FUNCTIONNO
+  			and j.ROLEID=#{roleid,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="JurisdictionTable">
+  	insert into jurisdiction_table(JURISDICTIONNO,FUNCTIONNO,ROLEID)
+  	values (#{jurisdictionno,jdbcType=INTEGER},#{functionno,jdbcType=VARCHAR},#{roleid,jdbcType=VARCHAR})
+  </insert>
+  <delete id="deleteMap" parameterType="String">
+  	delete 
+  	from jurisdiction_table where JURISDICTIONNO in
+  	<foreach item="item" collection="array" open="("  
+            separator="," close=")">  
+            #{item}
+    </foreach> 
+  </delete>
+  <delete id="delete" parameterType="String">
+  	 delete 
+  	 from jurisdiction_table
+  	  where 
+  	 JURISDICTIONNO=#{jurisdictionno,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id ="setJurisdiction">
+  	insert into jurisdiction_table (JURISDICTIONNO,ROLEID,FUNCTIONNO)
+  		values
+  		<foreach collection="JurisdictionTable" item="jurList" separator=",">
+  			(#{jurList.jurisdictionno},#{jurList.roleid},#{jurList.functionno})
+  		</foreach>
+  </insert>
+  
+  <delete id= "delJurisdiction" parameterType="JurisdictionTable">
+  	delete from jurisdiction_table where
+  	<foreach collection = "JurisdictionTable" item = "jurListDel" 
+            separator="or">
+           JURISDICTIONNO = #{jurListDel.jurisdictionno}
+     </foreach>
+  </delete>
+  
+  <select id="getJurisdiction" parameterType="JurisdictionTable" resultMap="JurisdictionTableMap">
+        select * from jurisdiction_table 
+   </select>
+  
+</mapper>

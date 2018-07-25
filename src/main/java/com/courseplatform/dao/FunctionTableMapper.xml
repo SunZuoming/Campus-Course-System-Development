@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.FunctionTableDao">
+  <resultMap id="BaseResultMap" type="com.courseplatform.po.FunctionTable">
+    <id column="FUNCTIONNO" jdbcType="VARCHAR" property="functionno" />
+    <result column="FUNCTIONNAME" jdbcType="VARCHAR" property="functionname" />
+    <result column="FUNCTIONURL" jdbcType="VARCHAR" property="functionurl" />
+    <result column="FUNCTIONFATHER" jdbcType="VARCHAR" property="functionfather" />
+    <result column="FUNCTIONNOTE" jdbcType="VARCHAR" property="functionnote" />
+  </resultMap>
+  <select id="selectById" parameterType="com.courseplatform.po.RoleTable" resultMap="BaseResultMap">
+    select *
+    from function_table
+    where FUNCTIONNO = #{functionno,jdbcType=VARCHAR}
+  </select>
+  <select id="listFun"  resultMap="BaseResultMap">
+  	select *
+  	   from function_table
+  </select>
+  <select id="selectS" parameterType="com.courseplatform.po.RoleTable" resultMap="BaseResultMap">
+    select *
+    from function_table
+    where FUNCTIONNO like '1000%'
+  </select>
+    <select id="selectJ" parameterType="com.courseplatform.po.RoleTable" resultMap="BaseResultMap">
+    select *
+    from function_table
+    where FUNCTIONNO like '2000%'
+  </select>
+    <select id="selectG" parameterType="com.courseplatform.po.RoleTable" resultMap="BaseResultMap">
+    select *
+    from function_table
+    where FUNCTIONNO like '3000%'
+  </select>
+ </mapper>

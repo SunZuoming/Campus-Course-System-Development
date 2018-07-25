@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.SharedfileTableDao">
+  <resultMap id="SharedfileTableMap" type="com.courseplatform.po.SharedfileTable">
+    <id column="SHAREDFILENO" jdbcType="VARCHAR" property="sharedfileno" />
+    <result column="UPLOADER" jdbcType="VARCHAR" property="uploader" />
+    <result column="UPLOADTIME" jdbcType="VARCHAR" property="uploadtime" />
+    <result column="SHAREDFILEURL" jdbcType="VARCHAR" property="sharedfileurl" />
+    <result column="SHAREDFILETYPES" jdbcType="VARCHAR" property="sharedfiletypes" />
+    <result column="SHAREDFILEPASSFLAG" jdbcType="VARCHAR" property="sharedfilepassflag" />
+    <result column="SHAREDFILEGOOGNUM" jdbcType="INTEGER" property="sharedfilegoognum" />
+    <result column="SHAREDFILEBADNUM" jdbcType="INTEGER" property="sharedfilebadnum" />
+    <result column="SHAREDFILECOLLECTNUM" jdbcType="INTEGER" property="sharedfilecollectnum" />
+    <result column="SHAREDFILEREPORTNUM" jdbcType="INTEGER" property="sharedfilereportnum" />
+    <result column="SHAREDFILEDOWNLOADNUM" jdbcType="INTEGER" property="sharedfiledownloadnum" />
+    <result column="SHAREDFILENAME" jdbcType="VARCHAR" property="sharedfilename" />
+    <result column="SHAREDFILEGOODRATE" jdbcType="REAL" property="sharedfilegoodrate" />
+  </resultMap>
+  
+	<update id="examineFile" parameterType="SharedfileTable">
+		update sharedfile_table set SHAREDFILEPASSFLAG = #{sharedfilepassflag}
+			where SHAREDFILENO = #{sharedfileno}
+	</update>
+  
+  	<select id="noExamineFileList" resultMap="SharedfileTableMap" parameterType="SharedfileTable">
+  		select * from sharedfile_table 
+  			where SHAREDFILEPASSFLAG = '1' 
+  			limits #{start},#{length}
+  	</select>
+  	
+  	<select id="getSharedFileNum" resultType="Long">
+  		select count(*) from sharedfile_table
+  	</select>
+  	
+  	<select id="getSharedFileNumByNo" resultType="Integer" parameterType="Map">
+  		select count(*) from sharedfile_table where UPLOADER = #{userNo} and UPLOADTIME like #{date}
+  	</select>
+  	
+  	<select id="getSharedFile" resultMap="SharedfileTableMap" parameterType="String">
+  		select * from sharedfile_table where SHAREDFILENO = #{sharedFileNo}
+  	</select>
+  	
+  	<delete id="deleteSharedFile" parameterType="String">
+  		delete from sharedfile_table where SHAREDFILENO = #{sharedFileNo}
+  	</delete>
+  	<insert id="addfile" parameterType="com.courseplatform.po.SharedfileTable">
+  	insert into sharedfile_table (SHAREDFILENO,UPLOADER, UPLOADTIME, SHAREDFILEURL, 
+      SHAREDFILETYPES, SHAREDFILEPASSFLAG, SHAREDFILEGOOGNUM, 
+      SHAREDFILEBADNUM, SHAREDFILECOLLECTNUM, SHAREDFILEREPORTNUM, 
+      SHAREDFILEDOWNLOADNUM, SHAREDFILENAME, SHAREDFILEGOODRATE
+      )
+    values (#{sharedfileno,jdbcType=VARCHAR},#{uploader,jdbcType=VARCHAR}, #{uploadtime,jdbcType=VARCHAR}, #{sharedfileurl,jdbcType=VARCHAR}, 
+      #{sharedfiletypes,jdbcType=VARCHAR}, #{sharedfilepassflag,jdbcType=VARCHAR}, #{sharedfilegoognum,jdbcType=REAL}, 
+      #{sharedfilebadnum,jdbcType=REAL}, #{sharedfilecollectnum,jdbcType=REAL}, #{sharedfilereportnum,jdbcType=REAL}, 
+      #{sharedfiledownloadnum,jdbcType=REAL}, #{sharedfilename,jdbcType=VARCHAR}, #{sharedfilegoodrate,jdbcType=REAL}
+      )
+  </insert>
+  <select id="listShare" parameterType="java.lang.String" resultMap="SharedfileTableMap">
+  	select *
+  	from sharedfile_table order by SHAREDFILEPASSFLAG
+  </select>
+  
+  <select id="queryById" parameterType="com.courseplatform.po.SharedfileTable" resultMap="SharedfileTableMap">
+    select *
+    from sharedfile_table
+    where SHAREDFILENO = #{sharedfileno,jdbcType=VARCHAR}
+  </select>
+  <delete id="delete" parameterType="com.courseplatform.po.SharedfileTable">
+    delete from sharedfile_table
+    where SHAREDFILENO = #{sharedfileno,jdbcType=VARCHAR}
+  </delete>
+  <update id="update" parameterType="com.courseplatform.po.SharedfileTable">
+    update sharedfile_table
+    <trim prefix="set" suffixOverrides=",">
+    	
+    	<if test="sharedfilepassflag!=null">SHAREDFILEPASSFLAG = #{sharedfilepassflag,jdbcType=VARCHAR},</if>
+    	
+    </trim>
+    <!-- set UPLOADER = #{uploader,jdbcType=VARCHAR},
+      UPLOADTIME = #{uploadtime,jdbcType=VARCHAR},
+      SHAREDFILEURL = #{sharedfileurl,jdbcType=VARCHAR},
+      SHAREDFILETYPES = #{sharedfiletypes,jdbcType=VARCHAR},
+      SHAREDFILEPASSFLAG = #{sharedfilepassflag,jdbcType=VARCHAR},
+      SHAREDFILEGOOGNUM = #{sharedfilegoognum,jdbcType=REAL},
+      SHAREDFILEBADNUM = #{sharedfilebadnum,jdbcType=REAL},
+      SHAREDFILECOLLECTNUM = #{sharedfilecollectnum,jdbcType=REAL},
+      SHAREDFILEREPORTNUM = #{sharedfilereportnum,jdbcType=REAL},
+      SHAREDFILEDOWNLOADNUM = #{sharedfiledownloadnum,jdbcType=REAL},
+      SHAREDFILENAME = #{sharedfilename,jdbcType=VARCHAR},
+      SHAREDFILEGOODRATE = #{sharedfilegoodrate,jdbcType=REAL}
+       -->
+    where SHAREDFILENO = #{sharedfileno,jdbcType=VARCHAR}
+  </update>
+  
+  <insert id="upSharedFile" parameterType="SharedfileTable">
+        insert into sharedfile_table(SHAREDFILENO,UPLOADER,UPLOADTIME,SHAREDFILEURL,SHAREDFILENAME) 
+        values(#{sharedfileno},#{uploader},#{uploadtime},#{sharedfileurl},#{sharedfilename})
+     </insert>
+  	
+  	<select id="downSharedFile" resultMap="SharedfileTableMap" parameterType="Map">
+  		select * from sharedfile_table where SHAREDFILEPASSFLAG='0' limit #{start},#{length}
+  	</select>
+  	
+  	<select id="souSharedFile" resultMap="SharedfileTableMap" parameterType="SharedfileTable">
+  		select * from sharedfile_table a where  a.SHAREDFILENAME like CONCAT('%',#{fileto},'%')
+  		and  SHAREDFILEPASSFLAG='0'
+  	</select>
+  	
+  	<select id="sSharedFile" resultMap="SharedfileTableMap" parameterType="String">
+  		select * from sharedfile_table where SHAREDFILEURL=#{sharedfileurl} and SHAREDFILEPASSFLAG='0'
+  	</select>
+  	
+  	<select id="getfileNum" resultType="Integer">
+  	  select count(*) from sharedfile_table where SHAREDFILEPASSFLAG='0'
+    </select>
+    
+    <update id="updatafileNum" parameterType="SharedfileTable">
+	  update sharedfile_table set SHAREDFILEDOWNLOADNUM=#{sharedfiledownloadnum} 
+	  where SHAREDFILEURL=#{sharedfileurl}
+	</update>
+  	
+</mapper>

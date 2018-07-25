@@ -1,0 +1,10 @@
+body{padding:15px;font-family:inherit;font-size:20px;}
+input{width:150px;}
+p{font-weight:300;text-indent:2em;margin-bottom:10px;}
+h1.head{font-size:54px;line-height:100px;text-align:center;}
+.discribe{float:left;width:150px;min-height:150px;border:1px solid #ccc;padding:4px;margin-top:5px;color:#808080;font-size:12px;background:#fff;margin-right:10px;}
+.discribe-mini{height:200px;}
+.discribe-larger{width:830px;}
+.lwjdate-purple .lwjdate-head,.lwjdate-purple .lwjdate-dayselect,.lwjdate-purple .lwjdate-button-box,.lwjdate-purple .select-month,.lwjdate-red .select-year{background-color:#fc0fe8;}
+.lwjdate-purple .lwjdate-month-item, .lwjdate-purple .lwjdate-year-item{color:#fc0fe8;}
+.lwjdate-purple .lwjdate-month-item:hover, .lwjdate-red .lwjdate-year-item:hover{background:#fc0fe8;color:#ffffff;} 

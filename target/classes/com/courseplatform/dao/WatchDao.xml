@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.WatchDao">
+	<resultMap id="watchmap" type="com.courseplatform.po.WatchTable">
+	    <result column="id" jdbcType="INTEGER" property="id" />
+		<result column="USERNOS" jdbcType="VARCHAR" property="usernos" />
+		<result column="COURSEINFONO" jdbcType="VARCHAR" property="courseinfono" />
+		<result column="coursename" jdbcType="VARCHAR" property="coursename" />
+		<result column="USERNOT" jdbcType="VARCHAR" property="usernot" />
+		<result column="COURSEPS" jdbcType="VARCHAR" property="courseps" />
+		<result column="USERNAME" jdbcType="VARCHAR" property="username" />
+	</resultMap>
+	<insert id="insertWatchCourse" parameterType="WatchTable" >
+		insert into course_table (usernos,usernot,courseinfono,coursename,courseps,USERNAME)
+		values(#{usernos},#{usernot},#{courseinfono},#{coursename},#{courseps},#{username})
+	</insert>
+	
+	<delete id="deleteWatchCourse" parameterType="WatchTable">
+	  delete from course_table where id=#{id}
+	</delete>
+	
+	<select id="userWatchCourse" parameterType="WatchTable" resultMap="watchmap">
+	   select * from course_table where USERNOS=#{usernos}
+	 </select>
+	 
+	 <select id="uWatchCourse" parameterType="WatchTable" resultMap="watchmap">
+	   select * from course_table where USERNOS=#{usernos}
+	 </select>
+	 
+	 <select id="userWatCourse" parameterType="WatchTable" resultMap="watchmap">
+	   select * from course_table where USERNOS=#{usernos} and COURSEINFONO=#{courseinfono}
+	   and USERNOT=#{usernot}
+	 </select>
+	 
+	 
+	
+
+</mapper>

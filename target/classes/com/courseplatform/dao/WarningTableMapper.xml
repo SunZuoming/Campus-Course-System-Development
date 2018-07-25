@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.WarningTableDao">
+  <resultMap id="WarningTableMap" type="com.courseplatform.po.WarningTable">
+    <id column="WARNINGID" jdbcType="VARCHAR" property="warningid" />
+    <result column="WARNINGPUBLISHER" jdbcType="VARCHAR" property="warningpublisher" />
+    <result column="WARNINGPEOPLE" jdbcType="VARCHAR" property="warningpeople" />
+    <result column="WARNINGREASON" jdbcType="VARCHAR" property="warningreason" />
+    <result column="WARNINGREASONTYPE" jdbcType="VARCHAR" property="warningreasontype" />
+    <result column="WARNINGREASONNO" jdbcType="VARCHAR" property="warningreasonno" />
+    <result column="WARNINGREADFLAG" jdbcType="VARCHAR" property="warningreadflag" />
+    <result column="WARNINGREVISEFLAG" jdbcType="VARCHAR" property="warningreviseflag" />
+    <result column="WARNINGFINSHFLAG" jdbcType="VARCHAR" property="warningfinshflag" />
+    <result column="WARNINGSTARTDATE" jdbcType="VARCHAR" property="warningstartdate" />
+    <result column="WARNINGENDDATE" jdbcType="VARCHAR" property="warningenddate" />
+    <result column="WARNINGREADDATE" jdbcType="VARCHAR" property="warningreaddate" />
+    <result column="WARNINGNUMBER" jdbcType="INTEGER" property="warningnumber" />
+  </resultMap>
+  
+  <insert id="publicWarning" parameterType="WarningTable">
+  	insert into warning_table (WARNINGID,WARNINGPUBLISHER,WARNINGPEOPLE,WARNINGREASON,
+  								WARNINGREASONTYPE,WARNINGREASONNO,WARNINGSTARTDATE)
+  				values (#{warningid},#{warningpublisher},#{warningpeople},#{warningreason},
+  						#{warningreasontype},#{warningreasonno},#{warningstartdate})
+  </insert>
+  
+  <update id="endWarning" parameterType = "WarningTable">
+  	update warning_table 
+  	<set>
+  		WARNINGFINSHFLAG = #{}, WARNINGENDDATE = #{warningenddate}
+  	</set>
+  	where WARNINGID = #{warningid}
+  </update>
+  
+  <select id = "getWarningList" resultMap = "WarningTableMap">
+  	select * from warning_table where WARNINGREADFLAG = '1' and WARNINGFINSHFLAG = '0'
+  </select>
+  
+  <select id="getWarningNum" resultType="Long">
+  	select count(*) from warning_table
+  </select> 
+</mapper>

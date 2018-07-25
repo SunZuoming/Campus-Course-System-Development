@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	<context:property-placeholder location="classpath:application.properties"/>
+	
+	<bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">    
+        <property name="from" value ="2372590227@qq.com"></property>    
+    </bean>  
+      
+      
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">    
+        <property name="defaultEncoding" value="UTF-8" />    
+        <property name="host" value="smtp.qq.com" />    <!-- .exmail -->
+        <property name="username" value="2372590227@qq.com" />    
+        <property name="password" value="bwdtvcddglfgebjf" />    
+        <property name="javaMailProperties">    
+            <props>    
+                <!-- 设置认证开关 -->    
+                <prop key="mail.smtp.auth">true</prop>    
+                <!-- 启动调试开关 -->    
+                <prop key="mail.debug">true</prop>    
+                <!-- 设置发送延时 -->  
+                <prop key="mail.smtp.timeout">0</prop>  
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>  
+                <prop key="mail.smtp.port">465</prop>  
+                <prop key="mail.smtp.socketFactory.port">465</prop>  
+            </props>    
+        </property>    
+    </bean>  
+	
+</beans>

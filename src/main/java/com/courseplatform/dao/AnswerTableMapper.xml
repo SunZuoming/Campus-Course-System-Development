@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.AnswerTableDao">
+  <resultMap id="AnswerTableMap"  type="com.courseplatform.po.AnswerTable">
+    <id column="ANSWERNO" jdbcType="VARCHAR" property="answerno" />
+    <result column="QUESTIONNO" jdbcType="VARCHAR" property="questionno" />
+    <result column="ANSWERNER" jdbcType="VARCHAR" property="answerner" />
+    <result column="ANSWERTIME" jdbcType="VARCHAR" property="answertime" />
+    <result column="ANSWERCONTENT" jdbcType="VARCHAR" property="answercontent" />
+    <result column="ANSWERFILEURL" jdbcType="VARCHAR" property="answerfileurl" />
+    <result column="ANSWERFILENAME" jdbcType="VARCHAR" property="answerfilename" />
+    <result column="ANSWERRIGHTFLAG" jdbcType="VARCHAR" property="answerrightflag" />
+    <result column="ANSWERNERNO" jdbcType="VARCHAR" property="answernerno" />
+    
+  </resultMap>
+  
+  <select id="getAnswerNum" resultType="Long">
+  	select count(*) from answer_table 
+  </select>
+  
+  <select id="getAnswer" resultMap="AnswerTableMap" parameterType="String">
+  	select * from answer_table where ANSWERNO = #{answerNo}
+  </select>
+  
+  <delete id="deleteAnswerByQuestionNo" parameterType="String">
+  	delete from answer_table where QUESTIONNO = #{questionNo}
+  </delete>
+  
+  <delete id="deleteAnswerByAnswerNo" parameterType="String">
+  	delete from answer_table where ANSWERNO = #{answerNo}
+  </delete>
+  
+  <select id="getAnswerNumByNo" parameterType="Map" resultType="Integer">
+  	select count(*) from answer_table where ANSWERNERNO = #{userNo} and ANSWERTIME like #{date}
+  </select>
+  
+</mapper>

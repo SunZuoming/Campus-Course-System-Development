@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.HomeworkTableDao">
+  <resultMap id="HomeworkTableMap" type="com.courseplatform.po.HomeworkTable">
+    <id column="HOMEWORKNO" jdbcType="VARCHAR" property="homeworkno" />
+    <result column="HOMEWORKPUBLISHER" jdbcType="VARCHAR" property="homeworkpublisher" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="HOMEWORKCOURSE" jdbcType="VARCHAR" property="homeworkcourse" />
+    <result column="HOMEWORKPUBLISHTIME" jdbcType="VARCHAR" property="homeworkpublishtime" />
+    <result column="HOMEWORKCOMMITTIME" jdbcType="VARCHAR" property="homeworkcommittime" />
+    <result column="HOMEWORKCOMMITTYPE" jdbcType="VARCHAR" property="homeworkcommittype" />
+  </resultMap>
+  
+  <select id="getHomeworkNum" resultType="Long">
+  	select count(*) from homework_table
+  </select>
+  
+  <select id="getHomeworkNumByNo" resultType="Integer" parameterType="Map">
+  	select count(*) from homework_table where HOMEWORKPUBLISHER = #{userNo} and HOMEWORKPUBLISHTIME like #{date} 
+  </select>
+  
+  <insert id="publshwork" parameterType="HomeworkTable">
+    insert into homework_table(HOMEWORKNO,HOMEWORKPUBLISHER,username,HOMEWORKCOURSE,HOMEWORKPUBLISHTIME,HOMEWORKCONTENT,HOMEWORKCOMMITTIME,HOMEWORKCOMMITTYPE)
+    values(#{homeworkno},#{homeworkpublisher},#{username},#{homeworkcourse},#{homeworkpublishtime},#{homeworkcontent},#{homeworkcommittime},"1")
+  </insert>
+  
+  <select id="teacherWork" parameterType="HomeworkTable" resultMap="HomeworkTableMap">
+     select * from homework_table where HOMEWORKPUBLISHER=#{homeworkpublisher}
+  </select>
+  
+ </mapper>

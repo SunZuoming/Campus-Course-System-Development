@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.CourseinfoTableDao">
+  <resultMap id="CourseinfoTableMap" type="com.courseplatform.po.CourseinfoTable">
+    <id column="COURSEINFONO" jdbcType="VARCHAR" property="courseinfono" />
+    <result column="COURSENAME" jdbcType="VARCHAR" property="coursename" />
+    <result column="COURSEINFO" jdbcType="VARCHAR" property="courseinfo" />
+  </resultMap>
+  
+  <select id="getCourseByNo" parameterType="String" resultMap="CourseinfoTableMap">
+     select * from courseinfo_table where COURSEINFONO=#{courseinfono}
+  </select>
+  
+   <select id="getCourseAll" resultMap="CourseinfoTableMap" parameterType="Map">
+     select * from courseinfo_table limit #{start},#{length}
+   </select>
+   
+   <insert id="addCourse" parameterType="CourseinfoTable">
+        insert into courseinfo_table(COURSEINFONO,COURSENAME,COURSEINFO) 
+        values(#{courseinfono},#{coursename},#{courseinfo})
+     </insert>
+     
+     <select id="getcourseno" parameterType="String" resultMap="CourseinfoTableMap">
+     select * from courseinfo_table where COURSENAME=#{coursename}
+  </select>
+  
+  <select id="getcourseNum" resultType="Integer">
+  	  select count(*) from courseinfo_table
+    </select>
+ </mapper>

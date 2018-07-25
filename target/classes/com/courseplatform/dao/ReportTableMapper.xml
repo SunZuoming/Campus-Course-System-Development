@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.ReportTableDao">
+  <resultMap id="ReportTableMap" type="com.courseplatform.po.ReportTable">
+    <id column="REPORTNO" jdbcType="VARCHAR" property="reportno" />
+    <result column="REPORTREASON" jdbcType="VARCHAR" property="reportreason" />
+    <result column="REPORTER" jdbcType="VARCHAR" property="reporter" />
+    <result column="REPORTEER" jdbcType="VARCHAR" property="reporteer" />
+    <result column="REPORTGOODSNO" jdbcType="VARCHAR" property="reportgoodsno" />
+    <result column="REPORTGOODSTYPE" jdbcType="VARCHAR" property="reportgoodstype" />
+    <result column="REPORTTIME" jdbcType="VARCHAR" property="reporttime" />
+    <result column="REPORTFINISHFLAG" jdbcType="VARCHAR" property="reportfinishflag" />
+  </resultMap>
+  
+  <select id="getReportNum" resultType="Long">
+  	select count(*) from report_table
+  </select>
+  
+  <select id="getReportTableList" resultMap="ReportTableMap" parameterType="Map">
+  	select * from report_table where REPORTFINISHFLAG = '0' limit #{start},#{length}
+  </select>
+  
+  <select id="getReportNumFlag" resultType="Integer">
+  	select count(*) from report_table where REPORTFINISHFLAG = '0'
+  </select>
+  
+  <select id="getReportNumOfUser" resultType = "Integer" parameterType="String">
+  	select count(*) from report_table where REPORTEER = #{reporter}
+  </select>
+  
+  <select id="getReporterList" resultMap="ReportTableMap" parameterType="Map">
+  	select * from report_table where REPORTEER = #{reporter} limit #{start},#{length}
+  </select>
+  
+  <select id="getReportByNo" resultMap="ReportTableMap" parameterType="String">
+  	select * from report_table where REPORTNO = #{reportNo}
+  </select>
+  
+  <update id="endReport" parameterType="String">
+  	update report_table set REPORTFINISHFLAG = '1' where REPORTNO = #{reportNo}
+  </update>
+  
+</mapper>

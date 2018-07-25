@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.courseplatform.dao.TeacherCourseDao">
+	<resultMap type="com.courseplatform.po.TeacherCourse" id="teachermap">
+		<id column="id" property="id" />
+		<result column="teacherno" property="teacherno" />
+		<result column="teachername" property="teachername" />
+		<result column="coursename" property="coursename" />
+		<result column="coursefalg" property="coursefalg" />
+	</resultMap>
+	
+	 <insert id="createCourse" parameterType="TeacherCourse">
+        insert into teachercourse(teacherno,teachername,coursename) 
+        values(#{teacherno},#{teachername},#{coursename})
+     </insert>
+     
+     <select id="CourseByuser" parameterType="TeacherCourse" resultMap="teachermap">
+	   select * from teachercourse where teacherno=#{teacherno} and coursename=#{coursename}
+	 </select>
+     
+     <select id="CourseByus" parameterType="TeacherCourse" resultMap="teachermap">
+	   select * from teachercourse where teacherno=#{teacherno} and coursefalg='1' GROUP BY coursename
+	 </select>
+     
+     <select id="CourseAll" parameterType="TeacherCourse" resultMap="teachermap">
+	   select t1.id,t1.teacherno,t1.teachername,t1.coursename,t1.coursefalg,t2.COURSEINFO from teachercourse t1,courseinfo_table t2 
+	   where t1.coursename=t2.coursename limit #{start},#{length}
+	   
+	 </select>
+	 
+	  <select id="CourseByid" parameterType="TeacherCourse" resultMap="teachermap">
+	   select * from teachercourse where id=#{id}
+	 </select>
+	 
+	 <delete id="deletecourse" parameterType="TeacherCourse">
+	   delete from teachercourse where id=#{id}
+	 </delete>
+	 
+	 <select id="getteacourseNum" resultType="Integer">
+  	  select count(*) from teachercourse where coursefalg='1' 
+     </select>
+	 
+	 
+	<select id="list" parameterType="TeacherCourse" resultMap="teachermap">
+		select *
+		from teachercourse where coursefalg = '0'
+	</select>
+	
+	<select id="getMessage" parameterType="Integer" resultMap="teachermap" >
+		select *
+		 	from teachercourse
+		where 
+		 	id=#{id}
+	</select>
+	<update id="updatestatus" parameterType="TeacherCourse">
+	update teachercourse
+	<trim prefix="set" suffixOverrides=",">
+		<if test="teacherno!=null">teacherno=#{teacherno},</if>
+		<if test="teachername!=null">teachername=#{teachername},</if>
+		<if test="coursename!=null">coursename=#{coursename},</if>
+		<if test="coursefalg!=null">coursefalg=#{coursefalg},</if>
+	</trim>
+	<where>id=#{id}</where>
+	</update>
+</mapper>

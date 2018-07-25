@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.WatchDao">
+	<resultMap id="primap" type="com.courseplatform.po.Pricecourse">
+	    <id column="id" property="id" />
+	    <result column="coname" property="coname" />
+		<result column="USERNOS" property="usernos" />
+		<result column="price" property="price" />
+	</resultMap>
+	
+	<select id="prCourse" parameterType="Pricecourse" resultMap="primap">
+	   select * from pricecourse where id=#{id}
+	 </select>
+</mapper>

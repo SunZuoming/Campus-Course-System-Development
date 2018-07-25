@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.ProhibitLoginRecordTableDao">
+	<resultMap type="com.courseplatform.po.ProhibitLoginRecordTable" id="ProhibitLoginRecordTableMap">
+		<id column="PROHIBITLOGINEER" jdbcType="VARCHAR" property="ProhibitLogineer" />
+		<result column="PROHIBITLOGINREASON" jdbcType="VARCHAR" property="ProhibitLoginReason" />
+		<result column="PROHIBITLOGINER" jdbcType="VARCHAR" property="ProhibitLoginer" />
+		<result column="PROHIBITLOGINTIME" jdbcType="VARCHAR" property="ProhibitLoginTime" />
+		<result column="PROHIBITLOGINTYPE" jdbcType="VARCHAR" property="ProhibitLoginType" />
+		<result column="PROHIBITLOGINFLAG" jdbcType="VARCHAR" property="ProhibitLoginFlag" />
+		<result column="PROHIBITLOGINOPERATIONS" jdbcType="VARCHAR" property="ProhibitLoginOperations" />
+		<result column="PROHIBITCOMMITFLAG" jdbcType="VARCHAR" property="ProhibitCommitFlag" />
+		<result column="PROHIBITCOMMITTIME" jdbcType="VARCHAR" property="ProhibitCommitTime" />
+		<result column="PROHIBITLOGINSURPLUSDAYS" jdbcType="INTEGER" property="ProhibitLoginSurplusDays" />
+	</resultMap>
+	
+	<select id="getProhibit" parameterType="ProhibitLoginRecordTable" resultMap="ProhibitLoginRecordTableMap">
+		select * from prohibitloginrecord_table where PROHIBITLOGINEER = #{ProhibitLogineer};
+	</select>
+	
+	<select id="getProhibitByNo" parameterType="String" resultMap="ProhibitLoginRecordTableMap">
+		select * from prohibitloginrecord_table where PROHIBITLOGINEER = #{ProhibitLogineer};
+	</select>
+	
+	<update id="updateProRecord" parameterType="ProhibitLoginRecordTable">
+		update prohibitloginrecord_table 
+		<set>
+			<if test="ProhibitLoginType != null">
+				PROHIBITLOGINTYPE = #{ProhibitLoginType},
+			</if>
+			<if test="ProhibitLoginFlag != null">
+				PROHIBITLOGINFLAG = #{ProhibitLoginFlag},
+			</if>
+			<if test="ProhibitCommitFlag != null">
+				PROHIBITCOMMITFLAG = #{ProhibitCommitFlag},
+			</if>
+			<if test="ProhibitCommitTime != null">
+				PROHIBITCOMMITTIME = #{ProhibitCommitTime},
+			</if>
+			<if test="ProhibitLoginSurplusDays != null">
+				PROHIBITLOGINSURPLUSDAYS = #{ProhibitLoginSurplusDays},
+			</if>
+		</set>
+		where PROHIBITLOGINEER = #{ProhibitLogineer}
+	</update>
+	
+	<insert id="insertProRecord" parameterType="ProhibitLoginRecordTable">
+		insert into prohibitloginrecord_table (PROHIBITLOGINREASON,PROHIBITLOGINER,
+									PROHIBITLOGINEER,PROHIBITLOGINTIME,PROHIBITLOGINTYPE,PROHIBITLOGINFLAG
+									,PROHIBITLOGINOPERATIONS,PROHIBITCOMMITFLAG,PROHIBITCOMMITTIME,PROHIBITLOGINSURPLUSDAYS)
+				values (#{ProhibitLoginReason},#{ProhibitLoginer},#{ProhibitLogineer},
+							#{ProhibitLoginTime},#{ProhibitLoginType},#{ProhibitLoginFlag},#{ProhibitLoginOperations},
+							#{ProhibitCommitFlag},#{ProhibitCommitTime},#{ProhibitLoginSurplusDays})
+	</insert>
+	
+	<delete id="deleteProRecord" parameterType="ProhibitLoginRecordTable">
+		delete from prohibitloginrecord_table where PROHIBITLOGINEER = #{ProhibitLogineer}
+	</delete>
+	
+	<update id="updateProPlusDays" >
+		update prohibitloginrecord_table set PROHIBITLOGINSURPLUSDAYS = PROHIBITLOGINSURPLUSDAYS-1
+		 where PROHIBITLOGINSURPLUSDAYS > 0 and PROHIBITLOGINFLAG = 0
+	</update>
+	
+	<select id="getListPlus" resultMap="ProhibitLoginRecordTableMap">
+		select * from prohibitloginrecord_table where PROHIBITLOGINSURPLUSDAYS = 0
+	</select>
+	
+	<delete id="deleteProRecord2State" parameterType="java.util.List">
+		delete from prohibitloginrecord_table where 
+		<foreach collection="list" item = "user" separator="or">
+			PROHIBITLOGINEER = #{user.userNo}
+		</foreach>
+	</delete>
+	
+	<select id="getProhibitNum" resultType="Long">
+		select count(*) from prohibitloginrecord_table
+	</select>
+	
+	<select id="getProHibitTableList" resultMap="ProhibitLoginRecordTableMap" parameterType="Map">
+		select * from prohibitloginrecord_table 
+			where PROHIBITLOGINSURPLUSDAYS > 0 and PROHIBITLOGINTYPE != '4' 
+			limit #{start},#{length}
+	</select>
+	
+	<update id="cancelProDays" parameterType="String">
+		update prohibitloginrecord_table set PROHIBITLOGINSURPLUSDAYS = 0 where PROHIBITLOGINEER = #{userNo}
+	</update>
+</mapper>

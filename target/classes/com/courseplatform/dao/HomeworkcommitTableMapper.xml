@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.HomeworkcommitTableDao">
+  <resultMap id="HomeworkcommitTableMap" type="com.courseplatform.po.HomeworkcommitTable">
+    <id column="HOMEWORKCOMMITNO" jdbcType="VARCHAR" property="homeworkcommitno" />
+    <result column="HOMEWORKNO" jdbcType="VARCHAR" property="homeworkno" />
+    <result column="HOMEWORKCOMMITER" jdbcType="VARCHAR" property="homeworkcommiter" />
+    <result column="COMMITHOMEWORKTIME" jdbcType="VARCHAR" property="commithomeworktime" />
+    <result column="HOMEWORKFILEURL" jdbcType="VARCHAR" property="homeworkfileurl" />
+    <result column="HOMEWORKSCOREC" jdbcType="REAL" property="homeworkscorec" />
+    <result column="HOMEREVISEFLAG" jdbcType="VARCHAR" property="homereviseflag" />
+    <result column="homepg" jdbcType="VARCHAR" property="homepg" />
+  </resultMap>
+  
+  <select id="getHomeWorkCommitByNo" parameterType="Map" resultType="Integer">
+  	select count(*) from homeworkcommit_table where HOMEWORKCOMMITER = #{userNo} and COMMITHOMEWORKTIME like #{date}
+  </select>
+  
+  <insert id="upwork" parameterType="HomeworkcommitTable">
+    insert into homeworkcommit_table(HOMEWORKCOMMITNO,HOMEWORKNO,
+    HOMEWORKCOMMITER,COMMITHOMEWORKTIME,HOMEWORKTXTCONTENT,HOMEWORKFILEURL)
+    values(#{homeworkcommitno},#{homeworkno},#{homeworkcommiter},#{commithomeworktime},#{homeworktxtcontent},#{homeworkfileurl})
+  </insert>
+  
+  <select id="studentUpWork" parameterType="com.courseplatform.po.HomeworkcommitTable" resultMap="HomeworkcommitTableMap">
+     select * from homework_table t1,homeworkcommit_table t2
+     where t1.HOMEWORKNO = t2.HOMEWORKNO AND t1.HOMEWORKPUBLISHER =#{homeworkpublisher} 
+     and t2.homepg='0'
+  </select>
+  
+  <update id="checkStudentWork" parameterType="HomeworkcommitTable">
+	  update homeworkcommit_table set HOMEWORKTXTCONTENT=#{homeworktxtcontent},
+	  HOMEWORKSCOREC=#{homeworkscorec},homepg='1' 
+	  where HOMEWORKCOMMITNO=#{homeworkcommitno}
+  </update>
+  
+  <select id="studentWorkbyno" parameterType="HomeworkcommitTable" resultMap="HomeworkcommitTableMap">
+      select * from homeworkcommit_table where HOMEWORKCOMMITNO=#{homeworkcommitno}
+  </select>
+  
+   <select id="studenLook" parameterType="HomeworkcommitTable" resultMap="HomeworkcommitTableMap">
+      select *from homeworkcommit_table t1,homework_table t2 
+      where t1.HOMEWORKNO=t2.HOMEWORKNO and HOMEWORKCOMMITER=#{homeworkcommiter}
+  </select>
+  
+ </mapper>

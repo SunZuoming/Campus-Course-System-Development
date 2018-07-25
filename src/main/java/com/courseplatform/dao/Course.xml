@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.courseplatform.dao.CourseDao">
+<resultMap id="BaseResultMap" type="com.courseplatform.po.Course">
+    <id column="HOMEWORKNO" jdbcType="VARCHAR" property="homeworkno" />
+    <result column="HOMEWORKPUBLISHER" jdbcType="VARCHAR" property="homeworkpublisher" />
+    <result column="HOMEWORKCOURSE" jdbcType="VARCHAR" property="homeworkcourse" />
+    <result column="HOMEWORKPUBLISHTIME" jdbcType="VARCHAR" property="homeworkpublishtime" />
+    <result column="HOMEWORKCONTENT"  property="homeworkcontent" />
+    <result column="HOMEWORKCOMMITTIME" jdbcType="VARCHAR" property="homeworkcommittime" />
+    <result column="HOMEWORKCOMMITTYPE" jdbcType="VARCHAR" property="homeworkcommittype" />
+</resultMap>
+<select id="studentwork" parameterType="com.courseplatform.po.Course" resultMap="BaseResultMap">
+   select t3.HOMEWORKNO,t3.homeworkcourse,t3.homeworkpublishtime,t3.homeworkcommittime,
+    t3.homeworkcommittype,t3.homeworkcontent,t3.HOMEWORKCOMMITTIME
+    from COURSE_TABLE t1,teachercourse t2,HOMEWORK_TABLE t3
+    where  t1.USERNOT= t3.HOMEWORKPUBLISHER AND t1.USERNAME= t3.username AND t1.COURSENAME= t3.HOMEWORKCOURSE
+    AND t1.USERNOS =#{usernos}  and to_days(t3.HOMEWORKCOMMITTIME)-to_days(now())>=0 
+    GROUP BY HOMEWORKNO
+  </select>
+  
+  <select id="getCourseFile" parameterType="com.courseplatform.po.Course" resultMap="BaseResultMap">
+    select t3.COURSENAME,t3.filedress from COURSE_TABLE t1,COURSEINFO_TABLE t2,coursefile t3
+    where t1.COURSEINFONO = t2.COURSEINFONO AND t2.COURSENAME= t3.COURSENAME AND t1.USERNOS =#{usernos}
+  </select>
+  
+</mapper>

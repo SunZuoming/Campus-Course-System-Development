@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.courseplatform.dao.UserViewMainDao">
+	<!-- 查询所有文章类型 -->
+	<select id="querytArticletypes" resultType="com.courseplatform.po.ArticletypeTable">
+  		SELECT * FROM ARTICLETYPE_TABLE
+	</select>
+	
+	<!-- 根据文章类型名称查询文章类型信息 -->
+	<select id="queryArticlesByTname" parameterType="String" resultType="com.courseplatform.po.ArticletypeTable">
+  		SELECT * FROM ARTICLETYPE_TABLE WHERE ARTICLETYPENAME = #{ARTICLETYPENAME}
+	</select>
+	
+	<!-- 根据文章类型查询所有文章:按文章发布时间倒叙排序 -->
+	<select id="queryArticlesByTid" parameterType="String" resultType="com.courseplatform.po.ArticleTable">
+  		SELECT * FROM ARTICLE_TABLE WHERE ARTICLETYPES LIKE CONCAT('%',#{ARTICLETYPES},'%') ORDER BY ARTICLEPUBLISHTIME DESC
+	</select>
+	
+	<!-- 查询所有文章:按文章id倒叙排序 -->
+	<select id="queryArticles" resultType="com.courseplatform.po.ArticleTable">
+  		SELECT * FROM ARTICLE_TABLE ORDER BY ARTICLEPUBLISHTIME DESC
+	</select>
+	
+	<!-- 根据文章编号查询文章信息 -->
+	<select id="queryArticlesByAno" parameterType="String" resultType="com.courseplatform.po.ArticleTable">
+  		SELECT * FROM ARTICLE_TABLE WHERE ARTICLENO = #{ARTICLENO}
+	</select>
+	
+	<!-- 根据文章编号查询文章相关评论 -->
+	<select id="queryCommentByAno" parameterType="String" resultType="com.courseplatform.po.CommentTable">
+  		SELECT * FROM Comment_TABLE WHERE ARTICLENO = #{ARTICLENO} ORDER BY COMMENTTIME DESC
+	</select>
+	
+	<!-- 根据文章类型统计该类型的文章数 -->
+	<select id="countArticletypeBytype" parameterType="String" resultType="java.lang.String">
+  		SELECT count(1) FROM ARTICLE_TABLE WHERE ARTICLETYPES LIKE CONCAT('%',#{articletypeid},'%')
+	</select>
+	
+	<!-- 新增文章举报记录 -->
+	<insert id="insertReportArticle" parameterType="com.courseplatform.po.ReportTable">
+		insert REPORT_TABLE(reportno,reportreason,reporter,reporteer,reportgoodsno,reportgoodstype,reporttime,reportfinishflag) 
+		values(#{reporttable.reportno},#{reporttable.reportreason},#{reporttable.reporter},#{reporttable.reporteer},#{reporttable.reportgoodsno},#{reporttable.reportgoodstype},sysdate(),#{reporttable.reportfinishflag})
+	</insert>
+	
+	<!-- 新增文章评论记录 -->
+	<insert id="insertCommentArticle" parameterType="com.courseplatform.po.CommentTable">
+		insert Comment_TABLE values(#{commenttable.commentno},#{commenttable.articleno},#{commenttable.commentcontent},sysdate(),#{commenttable.commenter},#{commenttable.commenterno})
+	</insert>
+	
+	<!-- 根据收藏作品编号、收藏作品类型、收藏人查询收藏表记录 -->
+	<select id="queryCollection" parameterType="String" resultType="com.courseplatform.po.CollectionTable">
+  		SELECT * FROM collection_table WHERE collectionno = #{collectionno} AND collectiontype = #{collectiontype} AND collector = #{collector}
+	</select>
+	
+	<!-- 新增收藏表:收藏文章 -->
+	<insert id="insertCollectionArticle" parameterType="com.courseplatform.po.CollectionTable">
+		insert collection_table values(#{collectiontable.collectno},#{collectiontable.collectionno},#{collectiontable.collectiontype},#{collectiontable.collector},sysdate())
+	</insert>
+	
+	<!-- 根据文章编号进行文章浏览次数+1 -->
+	<update id="updateArticleReadnum" parameterType="String">
+		UPDATE ARTICLE_TABLE SET ARTICLEREADNUM = ARTICLEREADNUM+1 WHERE ARTICLENO = #{articleno}
+	</update>
+	
+	<!-- 根据文章编号进行文章收藏次数+1 -->
+	<update id="updateArticleCollnum" parameterType="String">
+		UPDATE ARTICLE_TABLE SET ARTICLECOLLECTNUM = ARTICLECOLLECTNUM+1 WHERE ARTICLENO = #{articleno}
+	</update>
+	
+	<!-- 根据文章编号进行文章评论次数+1 -->
+	<update id="updateArticleCommentnum" parameterType="String">
+		UPDATE ARTICLE_TABLE SET ARTICLECOMNUM = ARTICLECOMNUM+1 WHERE ARTICLENO = #{articleno}
+	</update>
+	
+	<!-- 根据文章编号进行文章举报次数+1 -->
+	<update id="updateArticleReportnum" parameterType="String">
+		UPDATE ARTICLE_TABLE SET ARTICLEREPORTNUM = ARTICLEREPORTNUM+1 WHERE ARTICLENO = #{articleno}
+	</update>
+	
+	<!-- 查询浏览最高的前10个文章信息 -->
+	<select id="queryHostArctiles" resultType="com.courseplatform.po.ArticleTable">
+  		SELECT * FROM ARTICLE_TABLE ORDER BY ARTICLEREADNUM DESC LIMIT 0,10
+	</select>
+	
+	<!-- 查询最新发表的前10个文章信息 -->
+	<select id="queryNewArctiles" resultType="com.courseplatform.po.ArticleTable">
+  		SELECT * FROM ARTICLE_TABLE ORDER BY ARTICLEPUBLISHTIME DESC LIMIT 0,10
+	</select>
+	
+	<!-- 查询收藏最高的前10个文章信息-->
+	<select id="queryCollectionArctiles" resultType="com.courseplatform.po.ArticleTable">
+  		SELECT * FROM ARTICLE_TABLE ORDER BY ARTICLECOLLECTNUM DESC LIMIT 0,10
+	</select>
+	
+	<!-- 查询公告信息-->
+	<select id="queryNotices" resultType="com.courseplatform.po.NoticeTable">
+  		SELECT * FROM notice_table WHERE NOTICESTARTDATE = curdate() AND NOTICEENDDATE > curdate() ORDER BY NOTICEPUBLISHERDATE DESC
+	</select>
+	
+		<!-- 根据作者编号查询该作者下的最新发表文章 -->
+	<select id="queryNewArtsByUno" parameterType="String" resultType="com.courseplatform.po.ArticleTable">
+  		select * from article_table where ARTICLEPUBLISHERNO = #{articlepublisherno} ORDER BY ARTICLEPUBLISHTIME DESC LIMIT 0,5
+	</select>
+	
+	<!-- 根据作者编号查询该作者下的浏览最高文章 -->
+	<select id="queryReadArtsByUno" parameterType="String" resultType="com.courseplatform.po.ArticleTable">
+  		select * from article_table where ARTICLEPUBLISHERNO = #{articlepublisherno} ORDER BY ARTICLEREADNUM DESC LIMIT 0,5
+	</select>
+	
+	<!-- 根据作者编号查询该作者下的推荐(收藏)最高文章 -->
+	<select id="queryCollArtsByUno" parameterType="String" resultType="com.courseplatform.po.ArticleTable">
+  		select * from article_table where ARTICLEPUBLISHERNO = #{articlepublisherno} ORDER BY ARTICLECOLLECTNUM DESC LIMIT 0,5
+	</select>
+	
+	<!-- 根据作者编号查询该作者下的评论最高 -->
+	<select id="queryCommArtsByUno" parameterType="String" resultType="com.courseplatform.po.ArticleTable">
+  		select * from article_table where ARTICLEPUBLISHERNO = #{articlepublisherno} ORDER BY ARTICLECOMNUM DESC LIMIT 0,5
+	</select>
+	
+	<!-- 根据文章标题查询文章信息 -->
+	<select id="queryArticleByAname" parameterType="String" resultType="com.courseplatform.po.ArticleTable">
+  		SELECT * FROM article_table a WHERE a.ARTICLENAME like CONCAT('%',#{aname},'%') AND a.ARTICLETYPES LIKE CONCAT('%',#{typeid},'%')
+	</select>
+</mapper>
